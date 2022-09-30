@@ -35,7 +35,7 @@ moveBindings = {
         'o':(-1,1,0),
         'j':(1,1,1),
         'l':(-1,-1,-1),
-        'u':(-1,0,1),
+        'u':(0,-1,1),
         ',':(1,0,-1),
         '.':(0,1,-1),
         'm':(1,-1,0),  
@@ -73,7 +73,7 @@ if __name__=="__main__":
     pubr = rospy.Publisher('/open_base/right_joint_velocity_controller/command', Float64, queue_size=1)
 
 
-    speed = 1.0
+    speed = 30.0
     x = 0
     y = 0
     z = 0
@@ -104,31 +104,30 @@ if __name__=="__main__":
                     break
 
             vell = Float64()
-	    velb = Float64()
-	    velr = Float64()
-	
-	    vell = x*speed
-	    velb = y*speed
-	    velr = z*speed
+            velb = Float64()
+            velr = Float64()
 
-	    publ.publish(vell)
-	    pubb.publish(velb)
-	    pubr.publish(velr)
+            vell = x*speed
+            velb = y*speed
+            velr = z*speed
+            publ.publish(vell)
+            pubb.publish(velb)
+            pubr.publish(velr)
 
     except Exception as e:
         print(e)
 
     finally:
         vell = Float64()
-	velb = Float64()
-	velr = Float64()
+        velb = Float64()
+        velr = Float64()
 	
-	vell = 0.0
-	velb = 0.0
-	velr = 0.0
+        vell = 0.0
+        velb = 0.0
+        velr = 0.0
 
-	pubb.publish(vell)
-	publ.publish(velb)
-	pubr.publish(velr)
+        pubb.publish(vell)
+        publ.publish(velb)
+        pubr.publish(velr)
 
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
